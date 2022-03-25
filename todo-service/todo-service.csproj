@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\todo-domain\todo-domain.csproj" />
+    <ProjectReference Include="..\todo-repository\todo-repository.csproj" />
+  </ItemGroup>
 </Project>
