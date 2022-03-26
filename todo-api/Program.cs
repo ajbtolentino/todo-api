@@ -82,6 +82,9 @@ builder.AddAutofacDependencies();
 
 var app = builder.Build();
 
+var context = app.Services.GetRequiredService< DataContext>();
+context.Database.Migrate();
+
 app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 // Configure the HTTP request pipeline.
