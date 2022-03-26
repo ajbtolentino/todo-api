@@ -1,37 +1,32 @@
-﻿using ASPNetCoreMastersTodoList.Api.Enrichers;
-using ASPNetCoreMastersTodoList.Api.Extensions;
-using ASPNetCoreMastersTodoList.Api.MIddleware;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using todo_repository;
+﻿using Microsoft.EntityFrameworkCore;
+using todo_api.Data;
+using todo_api.Service;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Host.UseSerilog((context, configuration) =>
-{
-    configuration.ReadFrom.Configuration(context.Configuration);
-    configuration.Enrich.With<UserEnricher>();
-});
 
 builder.Services.AddCors();
 
 // Add services to the container.
 builder.Services.AddControllers();
 
+//Add dependencies
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+builder.Services.AddScoped<ITodoService, TodoService>();
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlite("Data Source=todo.db"));
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<DataContext>();
-
-builder.AddAutofacDependencies();
 
 var app = builder.Build();
 
-var context = app.Services.GetRequiredService< DataContext>();
-
-context.Database.Migrate();
+// migrate any database changes on startup (includes initial db creation)
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+    dataContext.Database.Migrate();
+}
 
 app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
@@ -47,10 +42,6 @@ else
     app.UseHsts();
 }
 
-
-app.UsePerformaceLogger();
-app.UseCustomErrorMessage();
-app.UseSerilogRequestLogging();
 
 app.UseRouting();
 

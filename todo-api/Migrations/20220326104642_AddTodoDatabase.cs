@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace todo_repository.Migrations
+namespace todo_api.Migrations
 {
-    public partial class AddSqlite : Migration
+    public partial class AddTodoDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace todo_domain;
+namespace todo_api.Data;
 
-public class Item
+public class Todo
 {
     [Key]
     public int Id { get; set; }

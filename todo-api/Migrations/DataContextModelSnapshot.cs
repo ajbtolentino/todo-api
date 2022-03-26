@@ -2,24 +2,22 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using todo_repository;
+using todo_api.Data;
 
 #nullable disable
 
-namespace todo_repository.Migrations
+namespace todo_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220326000925_AddSqlite")]
-    partial class AddSqlite
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
-            modelBuilder.Entity("todo_domain.Item", b =>
+            modelBuilder.Entity("todo_api.Data.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

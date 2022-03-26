@@ -1,22 +1,12 @@
 ﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:23822",
-      "sslPort": 44334
-    }
-  },
-  "profiles": {
-    "Local": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5001;http://localhost:5106",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Local"
+  {
+    "$schema": "https://json.schemastore.org/launchsettings.json",
+    "iisSettings": {
+      "windowsAuthentication": false,
+      "anonymousAuthentication": true,
+      "iisExpress": {
+        "applicationUrl": "http://localhost:23822",
+        "sslPort": 44334
       }
     },
     "Development": {
@@ -27,26 +17,6 @@
       "applicationUrl": "https://localhost:5001;http://localhost:5106",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Docker": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5001;http://localhost:5106",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Docker"
-      }
-    },
-    "Somee": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:5001;http://localhost:5106",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Somee"
       }
     }
   }

@@ -1,24 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using todo_service;
+using todo_api.Service;
 
-namespace ASPNetCoreMastersTodoList.Api.Filters
+namespace todo_api.Filters
 {
-    public class ItemExistsFilter : ActionFilterAttribute
+    public class TodoExistsFilter : ActionFilterAttribute
     {
         private const string ARGUMENT_ITEM_ID = "itemId";
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var itemService = context.HttpContext.RequestServices.GetService<IItemService>();
-            var containsItemId = context.ActionArguments.ContainsKey(ItemExistsFilter.ARGUMENT_ITEM_ID);
+            var itemService = context.HttpContext.RequestServices.GetService<ITodoService>();
+            var containsItemId = context.ActionArguments.ContainsKey(TodoExistsFilter.ARGUMENT_ITEM_ID);
 
-            if (containsItemId)
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            if (containsItemId &&
+                int.TryParse(context.ActionArguments[ARGUMENT_ITEM_ID].ToString(), out int itemId))
             {
-                var itemId = (int)context.ActionArguments[ARGUMENT_ITEM_ID];
-
-                if(itemService.Get(itemId) is null) context.Result = new NotFoundResult();
+                if(itemService is not null) if(itemService.Get(itemId) is null) context.Result = new NotFoundResult();
             }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
     }
 }

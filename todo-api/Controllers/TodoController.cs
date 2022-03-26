@@ -1,23 +1,20 @@
 ﻿using ASPNetCoreMastersTodoList.Api.BindingModels;
-using ASPNetCoreMastersTodoList.Api.Filters;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTO;
-using todo_service;
+using todo_api.Filters;
+using todo_api.Service;
 
 namespace ASPNetCoreMastersTodoList.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [ItemExistsFilter]
-    public class ItemsController : ControllerBase
+    [TodoExistsFilter]
+    public class TodoController : ControllerBase
     {
-        private readonly IItemService itemService;
-        private readonly ILogger logger;
+        private readonly ITodoService itemService;
 
-        public ItemsController(IItemService itemService, ILogger<ItemsController> logger)
+        public TodoController(ITodoService itemService)
         {
             this.itemService = itemService;
-            this.logger = logger;
         }
 
         /// <summary>
@@ -27,9 +24,7 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = this.itemService.GetAll();
-
-            logger.LogInformation("Items retrieved: {@ItemCount}", result.Count());
+            var result = this.itemService.GetAll().OrderByDescending(_ => _.Id);
 
             return Ok(result);
         }
@@ -44,8 +39,6 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         public IActionResult Get(int itemId)
         {
             var result = this.itemService.Get(itemId);
-
-            logger.LogInformation("Item retrieved: {@Item}", result);
 
             return Ok(result);
         }
@@ -63,13 +56,11 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
                 return BadRequest(ModelState);
 			}
 
-            this.itemService.Add(new ItemDTO
+            this.itemService.Add(new TodoDTO
             {
                 Text = itemCreateModel.Text,
                 DateCreated = DateTime.UtcNow
             });
-
-            this.logger.LogInformation("Item Added: {@Payload}", itemCreateModel);
 
             return Ok();
         }
@@ -89,13 +80,11 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            this.itemService.Update(new ItemDTO
+            this.itemService.Update(new TodoDTO
             {
                 Id = itemId,
                 Text = itemUpdateModel.Text
             });
-
-            this.logger.LogInformation("Item updated: {@Payload}", itemUpdateModel);
 
             return Ok();
         }
@@ -110,8 +99,6 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         public IActionResult Delete(int itemId)
         {
             this.itemService.Delete(itemId);
-
-            this.logger.LogInformation("Item deleted: {ItemId}", itemId);
 
             return Ok();
         }
