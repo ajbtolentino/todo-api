@@ -1,13 +1,8 @@
-﻿using ASPNetCoreMastersTodoList.Api.AppSettings;
-using ASPNetCoreMastersTodoList.Api.Enrichers;
+﻿using ASPNetCoreMastersTodoList.Api.Enrichers;
 using ASPNetCoreMastersTodoList.Api.Extensions;
 using ASPNetCoreMastersTodoList.Api.MIddleware;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Serilog;
-using System.Text;
 using todo_repository;
 
 var builder = WebApplication.CreateBuilder(args);

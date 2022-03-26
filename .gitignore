@@ -353,4 +353,4 @@ MigrationBackup/
 
 logs*.txt
 
-todo.db
+todo.db*

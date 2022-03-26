@@ -3,10 +3,10 @@
 namespace ASPNetCoreMastersTodoList.Api.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class ErrorController : ControllerBase
     {
         [HttpGet]
-        [Route("/error")]
         public IActionResult Error() => Problem();
     }
 

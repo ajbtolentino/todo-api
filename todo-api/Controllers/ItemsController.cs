@@ -7,7 +7,7 @@ using todo_service;
 namespace ASPNetCoreMastersTodoList.Api.Controllers
 {
     [ApiController]
-    [Route("items")]
+    [Route("api/[controller]")]
     [ItemExistsFilter]
     public class ItemsController : ControllerBase
     {
@@ -40,7 +40,7 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         /// <param name="itemId">Id of the item</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("getById/{itemId}")]
+        [Route("{itemId}")]
         public IActionResult Get(int itemId)
         {
             var result = this.itemService.Get(itemId);
