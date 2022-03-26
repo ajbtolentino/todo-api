@@ -56,7 +56,7 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         /// <param name="itemCreateModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ItemCreateBindingModel itemCreateModel)
+        public IActionResult Post([FromBody] ItemCreateBindingModel itemCreateModel)
         {
             if (!ModelState.IsValid)
 			{
@@ -82,7 +82,7 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("{itemId}")]
-        public async Task<IActionResult> Put(int itemId, [FromBody] ItemUpdateBindingModel itemUpdateModel)
+        public IActionResult Put(int itemId, [FromBody] ItemUpdateBindingModel itemUpdateModel)
         {
             if (!ModelState.IsValid)
             {
