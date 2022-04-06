@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using todo_api.Data;
-using todo_api.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +8,7 @@ builder.Services.AddCors();
 // Add services to the container.
 builder.Services.AddControllers();
 
-//Add dependencies
-builder.Services.AddScoped<ITodoRepository, TodoRepository>();
-builder.Services.AddScoped<ITodoService, TodoService>();
+//Add Data Context
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite("Data Source=todo.db"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

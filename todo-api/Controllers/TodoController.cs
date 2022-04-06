@@ -1,20 +1,18 @@
 ﻿using ASPNetCoreMastersTodoList.Api.BindingModels;
 using Microsoft.AspNetCore.Mvc;
-using todo_api.Filters;
-using todo_api.Service;
+using todo_api.Data;
 
 namespace ASPNetCoreMastersTodoList.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [TodoExistsFilter]
     public class TodoController : ControllerBase
     {
-        private readonly ITodoService itemService;
+        private readonly DataContext dataContext;
 
-        public TodoController(ITodoService itemService)
+        public TodoController(DataContext dataContext)
         {
-            this.itemService = itemService;
+            this.dataContext = dataContext;
         }
 
         /// <summary>
@@ -24,9 +22,9 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = this.itemService.GetAll().OrderByDescending(_ => _.Id);
+            var todos = this.dataContext.Todos.OrderByDescending(_ => _.Id);
 
-            return Ok(result);
+            return Ok(todos);
         }
 
         /// <summary>
@@ -38,29 +36,33 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         [Route("{itemId}")]
         public IActionResult Get(int itemId)
         {
-            var result = this.itemService.Get(itemId);
+            var todo = this.dataContext.Todos.FirstOrDefault(todo => todo.Id == itemId);
 
-            return Ok(result);
+            return Ok(todo);
         }
 
         /// <summary>
         /// Adds a new item
         /// </summary>
-        /// <param name="itemCreateModel"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult Post([FromBody] ItemCreateBindingModel itemCreateModel)
+        public IActionResult Post([FromBody] CreateTodoModel model)
         {
             if (!ModelState.IsValid)
 			{
                 return BadRequest(ModelState);
 			}
 
-            this.itemService.Add(new TodoDTO
+            this.dataContext.Todos.Add(new Todo
             {
-                Text = itemCreateModel.Text,
-                DateCreated = DateTime.UtcNow
+                Text = model.Text,
+                Category = model.Category,
+                TargetDate = model.TargetDate,
+                DateCreated = DateTime.Now
             });
+
+            this.dataContext.SaveChanges();
 
             return Ok();
         }
@@ -69,22 +71,24 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         /// Updates an existing item
         /// </summary>
         /// <param name="itemId"></param>
-        /// <param name="itemUpdateModel"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
         [Route("{itemId}")]
-        public IActionResult Put(int itemId, [FromBody] ItemUpdateBindingModel itemUpdateModel)
+        public IActionResult Put(int itemId, [FromBody] UpdateTodoModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            this.itemService.Update(new TodoDTO
-            {
-                Id = itemId,
-                Text = itemUpdateModel.Text
-            });
+            var todo = this.dataContext.Todos.FirstOrDefault(_ => _.Id == itemId);
+
+            if (todo is null) return NotFound(model);
+
+            todo.Text = model.Text;
+            todo.Category = model.Category;
+            todo.Completed = model.Completed;
+            todo.TargetDate = model.TargetDate;
+
+            this.dataContext.SaveChanges();
 
             return Ok();
         }
@@ -98,7 +102,13 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         [Route("{itemId}")]
         public IActionResult Delete(int itemId)
         {
-            this.itemService.Delete(itemId);
+            var todo = this.dataContext.Todos.FirstOrDefault(_ => _.Id == itemId);
+
+            if (todo is null) return NotFound(itemId);
+
+            this.dataContext.Remove(todo);
+
+            this.dataContext.SaveChanges();
 
             return Ok();
         }

@@ -11,7 +11,7 @@ using todo_api.Data;
 namespace todo_api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220326104642_AddTodoDatabase")]
+    [Migration("20220326112950_AddTodoDatabase")]
     partial class AddTodoDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,13 +19,23 @@ namespace todo_api.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
-            modelBuilder.Entity("todo_api.Data.Item", b =>
+            modelBuilder.Entity("todo_api.Data.Todo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("DateCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TargetDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
@@ -34,7 +44,7 @@ namespace todo_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
+                    b.ToTable("Todos");
                 });
 #pragma warning restore 612, 618
         }

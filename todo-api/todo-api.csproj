@@ -36,11 +36,11 @@
     <None Remove="Serilog.Sinks.File" />
     <None Remove="SQLite" />
     <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
-    <None Remove="Service\" />
     <None Remove="Data\" />
+    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Service\" />
     <Folder Include="Data\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>
