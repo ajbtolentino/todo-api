@@ -3,8 +3,6 @@ using todo_api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors();
-
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -29,9 +27,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseCors(cors => cors.AllowAnyOrigin()
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .SetIsOriginAllowed(origin => true)
-                        .AllowCredentials());
+                        .AllowAnyMethod());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
