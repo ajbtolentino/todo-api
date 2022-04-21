@@ -7,10 +7,7 @@
     <RootNamespace>todo_api</RootNamespace>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Local' " />
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Docker' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Development' " />
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Somee' " />
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />

@@ -30,7 +30,7 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         /// <summary>
         /// Returns a todo with the given id
         /// </summary>
-        /// <param name="todoId">Id of the item</param>
+        /// <param name="todoId">Id of the todo</param>
         /// <returns></returns>
         [HttpGet]
         [Route("{todoId}")]
@@ -64,7 +64,9 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
 
             this.dataContext.SaveChanges();
 
-            return Ok();
+            var todos = this.dataContext.Todos.OrderByDescending(_ => _.Id);
+
+            return Ok(todos);
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [Route("{itemId}")]
+        [Route("{todoId}")]
         public IActionResult Put(int todoId, [FromBody] UpdateTodoModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -90,7 +92,9 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
 
             this.dataContext.SaveChanges();
 
-            return Ok();
+            var todos = this.dataContext.Todos.OrderByDescending(_ => _.Id);
+
+            return Ok(todos);
         }
 
         /// <summary>
@@ -110,13 +114,15 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
 
             this.dataContext.SaveChanges();
 
-            return Ok();
+            var todos = this.dataContext.Todos.OrderByDescending(_ => _.Id);
+
+            return Ok(todos);
         }
 
         /// <summary>
         /// Toggles completed state of an existing todo
         /// </summary>
-        /// <param name="itemId"></param>
+        /// <param name="todoId"></param>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
@@ -133,7 +139,9 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
 
             this.dataContext.SaveChanges();
 
-            return Ok();
+            var todos = this.dataContext.Todos.OrderByDescending(_ => _.Id);
+
+            return Ok(todos);
         }
     }
 }
