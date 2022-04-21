@@ -16,7 +16,7 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         }
 
         /// <summary>
-        /// Returns all items
+        /// Returns all todos
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -28,21 +28,21 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         }
 
         /// <summary>
-        /// Returns an item with the given id
+        /// Returns a todo with the given id
         /// </summary>
-        /// <param name="itemId">Id of the item</param>
+        /// <param name="todoId">Id of the item</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("{itemId}")]
-        public IActionResult Get(int itemId)
+        [Route("{todoId}")]
+        public IActionResult Get(int todoId)
         {
-            var todo = this.dataContext.Todos.FirstOrDefault(todo => todo.Id == itemId);
+            var todo = this.dataContext.Todos.FirstOrDefault(todo => todo.Id == todoId);
 
             return Ok(todo);
         }
 
         /// <summary>
-        /// Adds a new item
+        /// Adds a new todo
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -68,18 +68,18 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         }
 
         /// <summary>
-        /// Updates an existing item
+        /// Updates an existing todo
         /// </summary>
-        /// <param name="itemId"></param>
+        /// <param name="todoId"></param>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
         [Route("{itemId}")]
-        public IActionResult Put(int itemId, [FromBody] UpdateTodoModel model)
+        public IActionResult Put(int todoId, [FromBody] UpdateTodoModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var todo = this.dataContext.Todos.FirstOrDefault(_ => _.Id == itemId);
+            var todo = this.dataContext.Todos.FirstOrDefault(_ => _.Id == todoId);
 
             if (todo is null) return NotFound(model);
 
@@ -94,19 +94,42 @@ namespace ASPNetCoreMastersTodoList.Api.Controllers
         }
 
         /// <summary>
-        /// Deletes an item
+        /// Deletes an todo
         /// </summary>
-        /// <param name="itemId"></param>
+        /// <param name="todoId"></param>
         /// <returns></returns>
         [HttpDelete]
-        [Route("{itemId}")]
-        public IActionResult Delete(int itemId)
+        [Route("{todoId}")]
+        public IActionResult Delete(int todoId)
         {
-            var todo = this.dataContext.Todos.FirstOrDefault(_ => _.Id == itemId);
+            var todo = this.dataContext.Todos.FirstOrDefault(_ => _.Id == todoId);
 
-            if (todo is null) return NotFound(itemId);
+            if (todo is null) return NotFound(todoId);
 
             this.dataContext.Remove(todo);
+
+            this.dataContext.SaveChanges();
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Toggles completed state of an existing todo
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("toggleCompleted/{todoId}")]
+        public IActionResult ToggleCompleted(int todoId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var todo = this.dataContext.Todos.FirstOrDefault(_ => _.Id == todoId);
+
+            if (todo is null) return NotFound(todoId);
+
+            todo.Completed = !todo.Completed;
 
             this.dataContext.SaveChanges();
 
